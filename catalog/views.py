@@ -1,14 +1,18 @@
-from django.shortcuts import render
+from gc import get_objects
 
-from catalog.models import Product, Category
+from django.shortcuts import render, get_object_or_404
+
+from catalog.models import Product
 
 # Create your views here.
-def category(request):
-    product = Product.objects.all()
+def category(request, category_slug):
+    if category_slug=='all':
+        product = Product.objects.all()
+    else:
+        product = get_object_or_404(Product.objects.filter(category__slug=category_slug))
     context = {
         'title': 'Catalog',
         'products':product,
-        'category':category,
     }
     return render(request,'catalog/category.html', context)
 
