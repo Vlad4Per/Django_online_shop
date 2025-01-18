@@ -20,5 +20,5 @@ from catalog import views
 app_name = 'catalog'
 urlpatterns = [
     path('', views.category, name='category'),
-    path('product/', views.product, name='product'),
+    path('product/<slug:product_slug>', views.product, name='product'),
 ]
