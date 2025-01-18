@@ -37,3 +37,4 @@ class Product(models.Model):
     class Meta:
         db_table = 'product'
         verbose_name_plural = 'Products'
+        ordering=('id',)
