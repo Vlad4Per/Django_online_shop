@@ -18,7 +18,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to="catalog_images")
-    price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2)
+    price = models.DecimalField(default=0.0, max_digits=9, decimal_places=2)
     discount = models.DecimalField(default=0.0, max_digits=7, decimal_places=2)
     quantity = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(to=Category,on_delete=models.CASCADE)

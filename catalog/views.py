@@ -9,17 +9,26 @@ from catalog.models import Product
 # Create your views here.
 def category(request, category_slug):
     page = int(request.GET.get('page', 1))
+    on_sale = request.GET.get('on_sale', None)
+    order_by = request.GET.get('order_by', None)
+
     if category_slug == 'all':
         products = Product.objects.all()
     else:
         products = get_list_or_404(Product.objects.filter(category__slug=category_slug))
 
-    paginator = Paginator(products, 1)
+    if on_sale:
+        products = products.filter(discount__gt=0)
+    if order_by and order_by != "default":
+        products = products.order_by(order_by)
+
+    paginator = Paginator(products, 3)
     cur_page = paginator.page(page)
 
     context = {
         'title': 'Catalog',
         'products': cur_page,
+        'slug_url':category_slug,
     }
     return render(request, 'catalog/category.html', context)
 
