@@ -26,6 +26,14 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.name} - {self.quantity} штук(-а)'
 
+    def display_id(self):
+        return f'{self.id:05}'
+
+    def sell_cost(self):
+        if self.discount:
+            return round(self.price * (1-self.discount/100),2)
+        return self.price
+
     class Meta:
         db_table = 'product'
         verbose_name_plural = 'Products'
