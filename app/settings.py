@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
 
     "debug_toolbar",
+
     'main',
-    'catalog'
+    'catalog',
+    'users'
 ]
 
 MIDDLEWARE = [
