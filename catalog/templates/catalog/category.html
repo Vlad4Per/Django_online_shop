@@ -11,13 +11,17 @@
                     aria-expanded="false">
                 Фильтры
             </button>
-            <form action="{% if request.GET.q %}{% url "catalog:search" %} {% else %}{% url "catalog:category" slug_url %}{% endif %}" method="get" class="dropdown-menu bg-dark"
+            <form action="
+
+
+                    {% if request.GET.q %}{% url "catalog:search" %} {% else %}{% url "catalog:category" slug_url %}{% endif %}"
+                  method="get" class="dropdown-menu bg-dark"
                   data-bs-theme="dark">
                 <div class="form-check text-white mx-3">
                     <input class="form-check-input" type="checkbox" name="on_sale" id="flexCheckDefault" value="on"
                            {% if request.GET.on_sale == 'on' %}checked{% endif %}>
                     {% if request.GET.q %}
-                    <input type="hidden" name="q" value="{{ request.GET.q}}">
+                        <input type="hidden" name="q" value="{{ request.GET.q }}">
                     {% endif %}
                     <label class="form-check-label" for="flexCheckDefault">
                         Товары по акции
@@ -49,6 +53,16 @@
             </form>
         </div>
 
+
+        {% if request.GET.q %}
+            <h2 class="mt-5 pt-3 pb-3 bg-white custom-shadow rounded-3">Результаты поиска по
+                запросу: {{ request.GET.q }}</h2>
+            {% if not products %}
+                <link rel="stylesheet" href="{% static 'deps/css/my_footer_css.css' %}">
+
+                <h2 class="mt-5 pt-3 pb-3 bg-white custom-shadow rounded-3">Ничего не найдено</h2>
+            {% endif %}
+        {% endif %}
 
 
         {% for product in products %}
@@ -91,28 +105,31 @@
 
     </div>
     <!-- Пагинация -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center my-4">
-            <div class="custom-shadow d-flex">
-                <li class="page-item {% if not products.has_previous %}disabled{% endif %}">
-                    <a class="page-link" href="{% if products.has_previous %}?{% change_params page=products.previous_page_number %}{% else %}#{% endif %}">Назад</a>
-                </li>
+    {% if products %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center my-4">
+                <div class="custom-shadow d-flex">
+                    <li class="page-item {% if not products.has_previous %}disabled{% endif %}">
+                        <a class="page-link" href="{% if products.has_previous %}?
+                        {% change_params page=products.previous_page_number %}{% else %}#{% endif %}">Назад</a>
+                    </li>
 
-                {% for page in products.paginator.page_range %}
-                    {% if page >= products.number|add:-2 and page <= products.number|add:2 %}
-                        <li class="page-item {% if products.number == page %} active {% endif %}">
-                            <a class="page-link" href="?{% change_params page=page %}">{{ page }}</a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
+                    {% for page in products.paginator.page_range %}
+                        {% if page >= products.number|add:-2 and page <= products.number|add:2 %}
+                            <li class="page-item {% if products.number == page %} active {% endif %}">
+                                <a class="page-link" href="?{% change_params page=page %}">{{ page }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
 
-                <li class="page-item {% if not products.has_next %}disabled{% endif %}">
-                    <a class="page-link" href="{% if products.has_next %}?{% change_params page=products.next_page_number %}{% else %}#{% endif %}">Следующая</a>
-                </li>
-            </div>
-        </ul>
-    </nav>
-
+                    <li class="page-item {% if not products.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="{% if products.has_next %}?
+                        {% change_params page=products.next_page_number %}{% else %}#{% endif %}">Следующая</a>
+                    </li>
+                </div>
+            </ul>
+        </nav>
+    {% endif %}
 {% endblock %}
 
 {% block footer %}
