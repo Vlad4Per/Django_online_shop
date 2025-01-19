@@ -4,16 +4,19 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_list_or_404
 
 from catalog.models import Product
-
+from catalog.utils import q_search
 
 # Create your views here.
-def category(request, category_slug):
+def category(request, category_slug=None):
     page = int(request.GET.get('page', 1))
     on_sale = request.GET.get('on_sale', None)
     order_by = request.GET.get('order_by', None)
+    query = request.GET.get('q', None)
 
     if category_slug == 'all':
         products = Product.objects.all()
+    elif query:
+        products = q_search(query)
     else:
         products = get_list_or_404(Product.objects.filter(category__slug=category_slug))
 
