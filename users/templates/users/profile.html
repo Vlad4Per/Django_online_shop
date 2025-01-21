@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% load cart_tags %}
+
 {% block content %}
     <div class="container">
         <div class="row mt-1">
@@ -16,14 +18,15 @@
                             <div class="col-md-5">
                                 <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
                                     <h3 class="text-center mb-4">Профиль пользователя</h3>
-                                    <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
+                                    <form action="{% url 'users:profile' %}" method="post"
+                                          enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="col-md-12 mb-3 text-center">
                                                 {% if user.image %}
                                                     <img src="{{ user.image.url }}"
-                                                     alt="Аватар пользователя" class="img-fluid rounded-circle"
-                                                     style="max-width: 150px;">
+                                                         alt="Аватар пользователя" class="img-fluid rounded-circle"
+                                                         style="max-width: 150px;">
                                                 {% else %}
                                                     <img src="{% static 'deps/images/baseavatar.jpg' %}"
                                                          alt="Аватар пользователя" class="img-fluid rounded-circle"
@@ -73,9 +76,13 @@
                                         {% include "cart/includes/included_cart.html" %}
                                         <!-- Закончилась разметка корзины -->
                                     </div>
-                                    <a class="btn btn-dark" href="../orders/create_order.html">
-                                        Оформить заказ
-                                    </a>
+                                    {% user_carts request as carts %}
+
+                                    {% if carts %}
+                                        <a class="btn btn-dark" href="../orders/create_order.html">
+                                            Оформить заказ
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                             <!-- Оформленные заказы -->
