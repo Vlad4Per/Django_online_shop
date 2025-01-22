@@ -17,7 +17,6 @@ class Order(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True)
     created_timestamp = models.DateTimeField(auto_now_add=True)
     phone_number = models.CharField(max_length=13)
-    requires_delivery = models.BooleanField(default=False)
     delivery_address = models.CharField(max_length=100, blank=True, null=True)
     status = models.CharField(max_length=50, default='В обработке')
 

@@ -1,0 +1,25 @@
+version: "4.37"
+
+services:
+  db:
+    image: postgres
+    container_name: shop_postgres
+    env_file:
+      - .env
+  shop:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: shop_django
+    depends_on:
+      - db
+    volumes:
+      - static_volume:/app/static
+      - media_volume:/app/media
+    env_file:
+      - .env
+    command: >
+      bash -c "./manage.py migrate"
+volumes:
+  static_volume: null
+  media_volume: null

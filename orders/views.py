@@ -19,7 +19,6 @@ def order(request):
                         order = Order.objects.create(
                             user=user,
                             phone_number=form.cleaned_data['phone_number'],
-                            requires_delivery=form.cleaned_data['requires_delivery'],
                             delivery_address=form.cleaned_data['delivery_address'],
                         )
                         for item in cart_items:
@@ -40,6 +39,7 @@ def order(request):
                         cart_items.delete()
                         return redirect('users:profile')
             except Exception as e:
+                print(e)
                 return redirect('main:index')
     else:
         form = OrderForm()
